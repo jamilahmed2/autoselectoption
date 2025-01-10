@@ -1,0 +1,12 @@
+{
+    "manifest_version": 3,
+    "name": "Auto Select Option",
+    "version": "1.0",
+    "description": "Automatically select radio/checkbox options based on user input.",
+    "permissions": ["activeTab", "scripting"],
+    "host_permissions": ["<all_urls>"],
+    "action": {
+      "default_popup": "popup.html"
+    }
+  }
+  
