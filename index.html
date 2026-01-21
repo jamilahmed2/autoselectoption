@@ -1,30 +1,603 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Auto Select Option</title>
+  <title>HU Auto Evaluation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg-primary: #2d3436;
+      --bg-secondary: #353b48;
+      --shadow-dark: #1e2224;
+      --shadow-light: #3d4448;
+      --accent: #00b894;
+      --accent-hover: #00a885;
+      --text-primary: #dfe6e9;
+      --text-secondary: #b2bec3;
+      --danger: #e74c3c;
+      --warning: #f39c12;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-width: 380px;
+      max-height: 600px;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    /* Neomorphic Card */
+    .neo-card {
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow:
+        8px 8px 16px var(--shadow-dark),
+        -8px -8px 16px var(--shadow-light);
+    }
+
+    .neo-inset {
+      background: var(--bg-primary);
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow:
+        inset 4px 4px 8px var(--shadow-dark),
+        inset -4px -4px 8px var(--shadow-light);
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .header h1 i {
+      font-size: 20px;
+    }
+
+    .header p {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Section Title */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .section-title i {
+      font-size: 14px;
+    }
+
+    /* Form Elements */
+    .row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    select,
+    textarea {
+      flex: 1;
+      padding: 12px 14px;
+      border: none;
+      border-radius: 10px;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 13px;
+      box-shadow:
+        inset 3px 3px 6px var(--shadow-dark),
+        inset -3px -3px 6px var(--shadow-light);
+      transition: all 0.3s;
+    }
+
+    select:focus,
+    textarea:focus {
+      outline: none;
+      box-shadow:
+        inset 3px 3px 6px var(--shadow-dark),
+        inset -3px -3px 6px var(--shadow-light),
+        0 0 0 2px var(--accent);
+    }
+
+    textarea {
+      min-height: 70px;
+      font-family: inherit;
+    }
+
+    /* Neomorphic Button */
+    .neo-btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      box-shadow:
+        4px 4px 8px var(--shadow-dark),
+        -4px -4px 8px var(--shadow-light);
+    }
+
+    .neo-btn:hover {
+      box-shadow:
+        2px 2px 4px var(--shadow-dark),
+        -2px -2px 4px var(--shadow-light);
+    }
+
+    .neo-btn:active {
+      box-shadow:
+        inset 2px 2px 4px var(--shadow-dark),
+        inset -2px -2px 4px var(--shadow-light);
+    }
+
+    .neo-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .neo-btn.primary {
+      background: var(--accent);
+      color: #1a1a2e;
+      box-shadow:
+        4px 4px 8px var(--shadow-dark),
+        -4px -4px 8px var(--shadow-light),
+        0 0 20px rgba(0, 184, 148, 0.3);
+    }
+
+    .neo-btn.primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .neo-btn.danger {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .neo-btn.warning {
+      background: var(--warning);
+      color: #1a1a2e;
+    }
+
+    .neo-btn.full {
+      width: 100%;
+    }
+
+    /* Pending List */
+    .pending-list {
+      max-height: 160px;
+      overflow-y: auto;
+      margin-top: 10px;
+    }
+
+    .pending-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      border-radius: 10px;
+      background: var(--bg-primary);
+      box-shadow:
+        inset 2px 2px 4px var(--shadow-dark),
+        inset -2px -2px 4px var(--shadow-light);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pending-item:hover {
+      background: var(--bg-secondary);
+    }
+
+    .pending-item:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Custom Checkbox */
+    .custom-checkbox {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      background: var(--bg-secondary);
+      box-shadow:
+        2px 2px 4px var(--shadow-dark),
+        -2px -2px 4px var(--shadow-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .custom-checkbox.checked {
+      background: var(--accent);
+      box-shadow:
+        inset 2px 2px 4px rgba(0, 0, 0, 0.2),
+        0 0 10px rgba(0, 184, 148, 0.4);
+    }
+
+    .custom-checkbox i {
+      color: #fff;
+      font-size: 10px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .custom-checkbox.checked i {
+      opacity: 1;
+    }
+
+    .pending-info {
+      flex: 1;
+    }
+
+    .pending-course {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .pending-teacher {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .pending-nav {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--bg-secondary);
+      box-shadow:
+        2px 2px 4px var(--shadow-dark),
+        -2px -2px 4px var(--shadow-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      transition: all 0.2s;
+    }
+
+    .pending-nav:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* Select All Bar */
+    .select-all-bar {
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--bg-primary);
+      box-shadow:
+        inset 2px 2px 4px var(--shadow-dark),
+        inset -2px -2px 4px var(--shadow-light);
+    }
+
+    .select-all-bar label {
+      font-size: 12px;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+
+    .selected-count {
+      margin-left: auto;
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Mode Toggle */
+    .mode-toggle {
+      display: flex;
+      background: var(--bg-primary);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 16px;
+      box-shadow:
+        inset 3px 3px 6px var(--shadow-dark),
+        inset -3px -3px 6px var(--shadow-light);
+    }
+
+    .mode-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.3s;
+    }
+
+    .mode-btn.active {
+      background: var(--bg-secondary);
+      color: var(--accent);
+      box-shadow:
+        3px 3px 6px var(--shadow-dark),
+        -3px -3px 6px var(--shadow-light);
+    }
+
+    .mode-content {
+      display: none;
+    }
+
+    .mode-content.active {
+      display: block;
+    }
+
+    /* Progress */
+    .status-box {
+      margin-top: 12px;
+      display: none;
+    }
+
+    .status-box.active {
+      display: block;
+    }
+
+    .progress-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--bg-primary);
+      box-shadow:
+        inset 2px 2px 4px var(--shadow-dark),
+        inset -2px -2px 4px var(--shadow-light);
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #00cec9);
+      width: 0%;
+      transition: width 0.3s;
+      border-radius: 4px;
+    }
+
+    .status-text {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
+    .status-text.success {
+      color: var(--accent);
+    }
+
+    .status-text.error {
+      color: var(--danger);
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--text-secondary);
+    }
+
+    .empty-state i {
+      font-size: 32px;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .empty-state p {
+      font-size: 12px;
+    }
+
+    /* Loading */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .loading i {
+      font-size: 24px;
+      color: var(--accent);
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 10px;
+      color: var(--text-secondary);
+      margin-top: 16px;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--shadow-light);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+  </style>
 </head>
+
 <body>
-  <h3>Select an Option:</h3>
-  <select id="option">
-    <option value="5">Strongly Agree</option>
-    <option value="4">Agree</option>
-    <option value="3">Uncertain</option>
-    <option value="2">Disagree</option>
-    <option value="1">Strongly Disagree</option>
-  </select>
-  <br><br>
-  <h3>Auto-Fill Comment:</h3>
-  <textarea id="comment" placeholder="Enter your comment (leave blank for manual entry)" rows="5" cols="30"></textarea>
-  <br>
-  <button id="apply">Apply</button>
-  <button id="clear-options">Clear Options</button>
-  <button id="clear-comment">Clear Comment</button>
+  <div class="header">
+    <h1><i class="fas fa-graduation-cap"></i> HU Auto Evaluation</h1>
+    <p>Developer <a style="color: #00a885;" href="https://www.linkedin.com/in/jamil-ahmed-54655220b/">Jamil Ahmed</a></p>
+  </div>
+
+  <!-- Evaluation Type & Fetch -->
+  <div class="neo-card">
+    <div class="section-title">
+      <i class="fas fa-book"></i> Evaluation Type
+    </div>
+    <div class="row">
+      <select id="eval-type">
+        <option value="course">Course Evaluation</option>
+        <option value="teacher">Teacher Evaluation</option>
+      </select>
+      <button id="fetch-btn" class="neo-btn primary">
+        <i class="fas fa-sync-alt"></i> Fetch
+      </button>
+    </div>
+  </div>
+
+  <!-- Pending List -->
+  <div class="neo-card" id="pending-section" style="display: none;">
+    <div class="section-title">
+      <i class="fas fa-clipboard-list"></i> Pending <span id="pending-count">(0)</span>
+    </div>
+
+    <div class="select-all-bar">
+      <div class="custom-checkbox" id="select-all-box">
+        <i class="fas fa-check"></i>
+      </div>
+      <label id="select-all-label">Select All</label>
+      <span class="selected-count" id="selected-count">0 selected</span>
+    </div>
+
+    <div class="pending-list" id="pending-list"></div>
+  </div>
+
+  <!-- Rating & Comment -->
+  <div class="neo-card">
+    <div class="section-title">
+      <i class="fas fa-star"></i> Rating & Comment
+    </div>
+    <div class="row" style="margin-bottom: 12px;">
+      <select id="rating">
+        <option value="5">★★★★★ Strongly Agree</option>
+        <option value="4">★★★★☆ Agree</option>
+        <option value="3">★★★☆☆ Uncertain</option>
+        <option value="2">★★☆☆☆ Disagree</option>
+        <option value="1">★☆☆☆☆ Strongly Disagree</option>
+      </select>
+    </div>
+    <textarea id="comment" placeholder="Optional comment for all evaluations..."></textarea>
+  </div>
+
+  <!-- Mode Toggle -->
+  <div class="mode-toggle">
+    <button class="mode-btn active" data-mode="manual">
+      <i class="fas fa-hand-pointer"></i> Manual
+    </button>
+    <button class="mode-btn" data-mode="auto">
+      <i class="fas fa-robot"></i> Auto
+    </button>
+  </div>
+
+  <!-- Manual Mode -->
+  <div class="mode-content active" id="mode-manual">
+    <div class="neo-card">
+      <div class="section-title">
+        <i class="fas fa-hand-pointer"></i> Manual Mode
+      </div>
+      <p style="font-size: 11px; color: var(--text-secondary); margin-bottom: 12px;">
+        Click <i class="fas fa-external-link-alt" style="color: var(--accent);"></i> to navigate. Apply fills current
+        page.
+      </p>
+      <button id="apply-btn" class="neo-btn primary full">
+        <i class="fas fa-magic"></i> Apply to Current Page
+      </button>
+    </div>
+  </div>
+
+  <!-- Auto Mode -->
+  <div class="mode-content" id="mode-auto">
+    <div class="neo-card">
+      <div class="section-title">
+        <i class="fas fa-robot"></i> Auto Mode
+      </div>
+      <p style="font-size: 11px; color: var(--text-secondary); margin-bottom: 12px;">
+        Select evaluations above, then test or submit automatically.
+      </p>
+      <div class="row">
+        <button id="test-btn" class="neo-btn warning" style="flex: 1;">
+          <i class="fas fa-flask"></i> Test
+        </button>
+        <button id="submit-btn" class="neo-btn primary" style="flex: 1;">
+          <i class="fas fa-paper-plane"></i> Submit
+        </button>
+      </div>
+      <button id="stop-btn" class="neo-btn danger full" style="margin-top: 10px; display: none;">
+        <i class="fas fa-stop"></i> Stop
+      </button>
+
+      <div class="status-box" id="status-box">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <p class="status-text" id="status-text">Ready</p>
+      </div>
+    </div>
+  </div>
+
   <footer>
-    <p>copyrighted by <a href="https://www.linkedin.com/in/jamil-ahmed-54655220b/" target="_blank">Jamil Ahmed</a></p>
-    <p><a href="https://github.com/jamilahmed2/autoselectoption" target="_blank">Github Repo</a></p>
+    Made by <a href="https://github.com/jamilahmed2/autoselectoption" target="_blank">Jamil Ahmed</a>
   </footer>
+
   <script src="script.js"></script>
 </body>
+
 </html>

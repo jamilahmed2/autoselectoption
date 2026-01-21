@@ -1,88 +1,90 @@
-# Auto Select and Comment Chrome Extension
+# Auto Select Option - HU Evaluation Extension
 
-A Chrome extension to simplify form-filling by automating the selection of options (radio buttons or checkboxes) and optionally auto-filling comment boxes.
+Automatically fill and submit **Course** and **Teacher** evaluations for Hamdard University Student Portal.
+
+![Extension UI](image.png)
+
+## ✨ Features
+
+### v3.0 - Work From Any Page
+- **Fetch Pending**: Get all pending evaluations from any portal page
+- **Manual Mode**: Click to navigate, apply to current page
+- **Auto Mode**: Select & submit multiple evaluations automatically
+- **Login Detection**: Alerts if not logged in
+
+### Core Features
+- Select rating (Strongly Agree → Strongly Disagree)
+- Auto-fill comments
+- Works with Course & Teacher evaluations
+- Neomorphic dark UI
 
 ---
 
-## Features
+## 📦 Installation
 
-- Automatically selects a specific option (radio or checkbox) for all questions.
-- Optional auto-fill feature for textareas with user-defined comments.
-- Streamlines repetitive form-filling tasks.
+1. Download or clone this repository
+2. Open Chrome → `chrome://extensions/`
+3. Enable **Developer mode**
+4. Click **Load unpacked** → Select folder
 
 ---
 
-## Installation
+## 🎯 How to Use
 
-### Clone the Repository
+### Auto Mode (Recommended)
+1. Login to [sp.hamdard.edu.pk](https://sp.hamdard.edu.pk)
+2. Click extension icon
+3. Select **Course** or **Teacher** evaluation
+4. Click **Fetch** to load pending
+5. Check evaluations to process
+6. Select rating & comment
+7. Click **Test** or **Submit**
 
-```
-git clone https://github.com/your-username/auto-select-comment-extension.git
-cd auto-select-comment-extension
+### Manual Mode
+1. Click **→** on any pending item to navigate
+2. Click **Apply to Current Page** to fill form
+3. Manually submit
 
-```
+---
 
-### Import the Extension into Chrome
-Open Google Chrome.
-1. Navigate to chrome://extensions/.
-2. Enable Developer Mode by toggling the switch in the top-right corner.
-3. Click on Load unpacked.
-4. Select the folder where you cloned this repository.
-6. The extension will now appear in your browser's extensions list.
-7. Pin the extension for quick access by clicking the extensions icon (puzzle piece) and pinning it.
+## 📸 Screenshots
 
+![Extension Popup](image.png)
 
-## Usage
+![Pending List](image2.png)
 
-### Open the Target Form Page
+---
 
-Navigate to the webpage containing the form you want to fill out.
+## ⚙️ Technical
 
-### Use the Extension
+| Feature | Value |
+|---------|-------|
+| Version | 3.0 |
+| Manifest | v3 |
+| Permissions | activeTab, scripting, tabs, storage |
 
-1. Click on the extension icon in the Chrome toolbar.
-2. A popup will appear with the following options:
-   - **Select an Option**: Choose the desired option (e.g., "Strongly Agree").
-   - **Auto-Fill Comment**: Enter a comment to auto-fill into textareas (leave blank if you want to manually input comments).
-3. Click the **Apply** button.
+---
 
-### Verify and Submit
+## ⚠️ Important
 
-1. The selected option will be applied to all applicable questions.
-2. Comments will be auto-filled or left for manual input, as specified.
-3. Review the form, make any necessary adjustments, and submit it.
+- **Cannot undo** submitted evaluations
+- **Must be logged in** to use
+- **2.5s delay** between submissions
 
-## Screenshots
+---
 
-### Popup Interface
-*(![alt text](image.png))*
+## 🔧 Troubleshooting
 
-### Automated Selection
-*(![alt text](image-1.png))*
+| Issue | Solution |
+|-------|----------|
+| "Not logged in" | Login to portal first |
+| No evaluations | Click Fetch button |
+| Extension error | Reload at chrome://extensions |
 
-## Development
+---
 
-### Prerequisites
+## 👨‍💻 Author
 
-- Ensure you have the latest version of **Google Chrome** installed.
+Made by [Jamil Ahmed](https://www.linkedin.com/in/jamil-ahmed-54655220b/)
 
-### Modify the Code
-
-1. To customize or enhance the extension, modify the files in the repository.
-2. Reload the extension in Chrome after making changes:
-   - Go to `chrome://extensions/`.
-   - Click **Reload** for your extension.
-
-### Debugging
-
-1. Use Chrome DevTools for debugging:
-   - Right-click on a page and select **Inspect**.
-   - Go to the **Console** tab to see logs from the extension.
-
-## Contributing
-
-Contributions are welcome! Feel free to fork the repository, make changes, and submit a pull request.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+[GitHub Repository](https://github.com/jamilahmed2/autoselectoption)
