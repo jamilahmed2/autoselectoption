@@ -16,7 +16,6 @@ Automatically fill and submit **Course** and **Teacher** evaluations for Hamdard
 - Select rating (Strongly Agree → Strongly Disagree)
 - Auto-fill comments
 - Works with Course & Teacher evaluations
-- Neomorphic dark UI
 
 ---
 
